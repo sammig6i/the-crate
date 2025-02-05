@@ -1,8 +1,10 @@
 from datetime import date
 
+from sqlalchemy import delete
+
 from app.crud.album import album
 from app.db.session import AsyncSessionLocal
-from app.models.album import AlbumStatus
+from app.models.album import AlbumStatus, Track, Album
 from app.schemas.album import AlbumCreate, TrackCreate
 
 sample_albums = [
@@ -32,11 +34,21 @@ sample_albums = [
 
 
 async def seed_data(db) -> None:
-    """Seed the database with sample data."""
+    """Seed the database with initial data."""
+    print("Starting database seeding...")
+
+    # First, delete all existing records using SQLAlchemy delete
+    await db.execute(delete(Track))
+    await db.execute(delete(Album))
+    await db.commit()
+
+    print("Cleared existing data...")
+
+    # Now add the sample data
     for album_data in sample_albums:
         tracks = album_data.pop("tracks")
         album_in = AlbumCreate(**album_data)
-        db_album = await album["create"](db, obj_in=album_in)
+        db_album = await album["create_album"](db, obj_in=album_in)
 
         # Create tracks for the album
         for track_data in tracks:
@@ -50,6 +62,7 @@ async def seed_data(db) -> None:
             )
 
     await db.commit()
+    print("Database seeding completed!")
 
 
 async def main() -> None:
