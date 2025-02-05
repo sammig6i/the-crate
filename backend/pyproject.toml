@@ -1,0 +1,42 @@
+[project]
+name = "the-crate-backend"
+version = "0.1.0"
+description = "Backend for The Crate music streaming platform"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi==0.104.1",
+    "uvicorn==0.24.0",
+    "python-multipart==0.0.6",
+    "python-jose[cryptography]==3.3.0",
+    "passlib[bcrypt]==1.7.4",
+    "sqlalchemy==2.0.23",
+    "asyncpg==0.29.0",
+    "supabase==2.0.3",
+    "python-dotenv==1.0.0",
+    "redis==5.0.1",
+    "pydantic==2.5.2",
+    "pydantic-settings==2.1.0",
+    "ffmpeg-python==0.2.0",
+    "pytest==7.4.3",
+    "httpx==0.24.1",
+    "alembic==1.12.1",
+    "tenacity==8.2.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+addopts = "-v"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+indent-width = 4
+
+[tool.hatch.build.targets.wheel]
+packages = ["."] 
